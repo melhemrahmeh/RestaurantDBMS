@@ -1,0 +1,15 @@
+create schema restaurantsDBMS;
+create table RESTAURANT (  rID INT NOT NULL primary key AUTO_INCREMENT,  brancheNumber INT NOT NULL,  rName VARCHAR(20) NOT NULL,  phoneNumber VARCHAR(8) NOT NULL,  city VARCHAR(20) NOT NULL,  street VARCHAR(20) NOT NULL,  rate DECIMAL(5,2) NOT NULL);
+create table Employee (  eID INT NOT NULL primary key AUTO_INCREMENT,  Salary INT NOT NULL,  eName VARCHAR(20) NOT NULL,  phoneNumber VARCHAR(20) NOT NULL,  address VARCHAR(20) NOT NULL,  restaurantID INT NOT NULL,FOREIGN KEY (restaurantID) REFERENCES Restaurant(rID)ON DELETE CASCADE ON UPDATE CASCADE);
+create table Cashier (  cID INT NOT NULL primary key AUTO_INCREMENT,    FOREIGN KEY (cID) REFERENCES Employee(eID)  ON DELETE CASCADE     ON UPDATE CASCADE );
+create table Waiter (  wID INT NOT NULL primary key AUTO_INCREMENT,    FOREIGN KEY (wID) REFERENCES Employee(eID)  ON DELETE RESTRICT ON UPDATE CASCADE );
+create table Deliverer (  dID INT NOT NULL primary key AUTO_INCREMENT,    FOREIGN KEY (dID) REFERENCES Employee(eID)  ON DELETE CASCADE     ON UPDATE CASCADE );
+create table Chef (  chID INT NOT NULL primary key AUTO_INCREMENT,    cType VARCHAR(20) NOT NULL,  FOREIGN KEY (chID) REFERENCES Employee(eID)  ON DELETE CASCADE     ON UPDATE CASCADE );
+create table Manager (  mID INT NOT NULL primary key AUTO_INCREMENT,   tasks varchar(200), FOREIGN KEY (mID) REFERENCES Employee(eID)  ON DELETE RESTRICT ON UPDATE CASCADE );
+create table theorder (  orderNum INT NOT NULL primary key AUTO_INCREMENT,      orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,      totalPrice decimal(19,4) not null,     isTable BOOLEAN,     isTakeAway BOOLEAN,     isDelivery BOOLEAN,     Table_Nb int,     address varchar(100) );
+create table Product (  pID int not null primary key AUTO_INCREMENT,     pName varchar(100) not null,     ingrediants varchar(500) not null,     category varchar(100),     price decimal(19,4) not null     );
+create table Include (  productID int not null,  orderNum INT NOT NULL primary key AUTO_INCREMENT,   FOREIGN KEY (productID) REFERENCES product(pID),  FOREIGN KEY (orderNum) REFERENCES theOrder(orderNum) );
+create table customer(  csID int not null primary key AUTO_INCREMENT,     cName varchar(100) not null,     phone_customer VARCHAR(20) NOT NULL );
+create table ordering(  orderNum INT NOT NULL,   csID int not null primary key AUTO_INCREMENT,  FOREIGN KEY (orderNum) REFERENCES theOrder(orderNum),  FOREIGN KEY (csID) REFERENCES Customer(csID) );
+create table Serve (  orderNum INT NOT NULL primary key AUTO_INCREMENT,   chID INT NOT NULL ,   wID INT NOT NULL ,  dID INT NOT NULL,      serveTime TIMESTAMP not null,  FOREIGN KEY (orderNum) REFERENCES theOrder(orderNum),  FOREIGN KEY (chID) REFERENCES chef(chID),  FOREIGN KEY (wID) REFERENCES waiter(wID),  FOREIGN KEY (dID) REFERENCES deliverer(dID) );
+create table payment (  csID int not null primary key AUTO_INCREMENT,  cID int not null,     recipet varchar(200) not null,  FOREIGN KEY (csID) REFERENCES Customer(csID) );

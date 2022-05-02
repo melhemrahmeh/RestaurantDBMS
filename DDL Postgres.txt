@@ -1,0 +1,16 @@
+create table RESTAURANT ( rID  SERIAL PRIMARY KEY,  brancheNumber INT,  rName VARCHAR(20) ,  phoneNumber VARCHAR(8)  ,  city VARCHAR(20),  street VARCHAR(20),  rate DECIMAL(5,2));
+create table Employee (  eID SERIAL PRIMARY KEY,  Salary INT,  eName VARCHAR(20),  phoneNumber VARCHAR(20),  address VARCHAR(20),  restaurantID INT,FOREIGN KEY (restaurantID) REFERENCES Restaurant(rID)ON DELETE CASCADE ON UPDATE CASCADE);
+create table Cashier (  cID SERIAL PRIMARY KEY,    FOREIGN KEY (cID) REFERENCES Employee(eID)  ON DELETE CASCADE     ON UPDATE CASCADE );
+create table Waiter (  wID SERIAL PRIMARY KEY,    FOREIGN KEY (wID) REFERENCES Employee(eID)  ON DELETE RESTRICT ON UPDATE CASCADE );
+create table Deliverer (  dID SERIAL PRIMARY KEY,    FOREIGN KEY (dID) REFERENCES Employee(eID)  ON DELETE CASCADE     ON UPDATE CASCADE );
+create table Chef (  chID SERIAL PRIMARY KEY,    cType VARCHAR(20),  FOREIGN KEY (chID) REFERENCES Employee(eID)  ON DELETE CASCADE     ON UPDATE CASCADE );
+create table Manager (  mID SERIAL PRIMARY KEY,   tasks varchar(200), FOREIGN KEY (mID) REFERENCES Employee(eID)  ON DELETE RESTRICT ON UPDATE CASCADE );
+create table theorder (  orderNum SERIAL PRIMARY KEY,      orderDate DATE  DEFAULT CURRENT_TIMESTAMP,      totalPrice decimal(19,4),     isTable BOOLEAN,     isTakeAway BOOLEAN,     isDelivery BOOLEAN,     Table_Nb int,     address varchar(100) );
+create table Product (  pID SERIAL PRIMARY KEY,     pName varchar(100),     ingrediants varchar(500),     category varchar(100),     price decimal(19,4) );
+create table Include (  productID int ,  orderNum SERIAL PRIMARY KEY,   FOREIGN KEY (productID) REFERENCES product(pID),  FOREIGN KEY (orderNum) REFERENCES theOrder(orderNum) );
+create table customer(  csID SERIAL PRIMARY KEY,     cName varchar(100),     phone_customer VARCHAR(20) );
+create table ordering(  orderNum INT ,   csID SERIAL PRIMARY KEY,  FOREIGN KEY (orderNum) REFERENCES theOrder(orderNum),  FOREIGN KEY (csID) REFERENCES Customer(csID) );
+create table Serve (  orderNum SERIAL PRIMARY KEY,   chID INT ,   wID INT  ,  dID INT ,      serveTime TIMESTAMP ,  FOREIGN KEY (orderNum) REFERENCES theOrder(orderNum),  FOREIGN KEY (chID) REFERENCES chef(chID),  FOREIGN KEY (wID) REFERENCES waiter(wID),  FOREIGN KEY (dID) REFERENCES deliverer(dID) );
+create table payment (  csID SERIAL PRIMARY KEY,  cID int,     recipet varchar(200),  FOREIGN KEY (csID) REFERENCES Customer(csID) );
+
+

@@ -1,0 +1,150 @@
+CREATE INDEX employee_index ON employee (salary asc, eName asc);
+SHOW INDEX FROM employee;
+CREATE VIEW EMPLOYEE_LIST (ID, NAME, ADDRESS, PHONE_NUMBER , SALARY) AS SELECT eID, eName, phoneNumber, address, Salary FROM employee;
+
+CREATE INDEX product_index ON product (pName asc, price asc);
+SHOW INDEX FROM product;
+CREATE VIEW PRODUCT_LIST (ID, NAME , PRICE) AS SELECT pID, pName, price FROM product;
+
+CREATE INDEX orderDateIndex ON theorder(orderDate Desc);
+SHOW INDEX FROM theorder;
+CREATE VIEW CUSTORMERORDER (Name, totalPrice , date ,address , phonenumber) 
+AS  select customer.cName, theorder.totalPrice , theorder.orderDate , theorder.address, customer.phone_customer
+from theorder , ordering, customer 
+where theorder.orderNum = ordering.orderNum and ordering.csID = customer.csID; 
+
+
+
+
+
+-- Query 1 : List of all the employees
+DELIMITER &&  
+CREATE PROCEDURE getEmployees ()  
+	BEGIN  
+		select * from EMPLOYEE_LIST;
+	END &&  
+DELIMITER ;  
+
+call getEmployees()
+
+
+
+
+-- Query 2 : Order employees by salary
+DELIMITER &&  
+CREATE PROCEDURE orderEmployeesBySalary ()  
+	BEGIN  
+		SELECT * From EMPLOYEE_LIST ORDER by Salary ASC; 
+	END &&  
+DELIMITER ;  
+
+call orderEmployeesBySalary()
+
+
+
+
+
+-- Query 3 : Show total salary of all employees.
+DELIMITER &&  
+CREATE PROCEDURE ShowEmployeesTotalSalaries ()  
+	BEGIN  
+		SELECT SUM(Salary) as TotalSalaries FROM EMPLOYEE_LIST;
+	END &&  
+DELIMITER ;  
+
+call ShowEmployeesTotalSalaries()
+
+
+
+
+
+-- Query 4 : Order employees alphabetically
+DELIMITER &&  
+CREATE PROCEDURE orderEmployeesAlphabetically ()  
+	BEGIN  
+		SELECT * FROM EMPLOYEE_LIST order by eName ASC;
+	END &&  
+DELIMITER ;  
+
+call orderEmployeesAlphabetically()
+
+
+
+
+
+-- Query 5 : List all products
+DELIMITER &&  
+CREATE PROCEDURE getProducts ()  
+	BEGIN  
+		SELECT * FROM PRODUCT_LIST;
+	END &&  
+DELIMITER ;  
+
+call getProducts()
+-- Some Add-ons:
+-- select * from product order by category;
+-- select * from PRODUCT_LIST order by price;
+-- select max(price) from PRODUCT_LIST;
+-- select min(price) from PRODUCT_LIST;
+-- select avg(price) from PRODUCT_LIST;
+-- select count(*) from PRODUCT_LIST;
+
+
+
+
+
+-- Query 6 : List all the orders that were ordered by a specific customer
+DELIMITER &&  
+CREATE PROCEDURE getOrders ()  
+	BEGIN  
+		Select * from CUSTORMERORDER;
+	END &&  
+DELIMITER ;  
+call getOrders()
+
+
+
+
+-- Query 7. List all the branches & the employees that work in it
+DELIMITER &&  
+CREATE PROCEDURE getAllBranchesEmployees ()  
+	BEGIN  
+		select Restaurant, eName , brancheNumber from restaurant , employee group by rID;
+	END &&  
+DELIMITER ;  
+call getAllBranchesEmployees()
+
+
+
+
+
+-- List all customers
+-- select * from customers
+
+
+
+
+
+
+-- Query 8. List all the branches & the employees that work in it
+DELIMITER &&  
+CREATE PROCEDURE getAllBranchesEmployees ()  
+	BEGIN  
+		select Restaurant, eName , brancheNumber from restaurant , employee group by rID;
+	END &&  
+DELIMITER ;  
+call getAllBranchesEmployees()
+
+
+
+
+
+
+-- Query 9. List all the employees
+DELIMITER &&  
+CREATE PROCEDURE getCustomers()  
+	BEGIN  
+		select * from customer;
+	END &&  
+DELIMITER ;  
+call getCustomers()
